@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Cost Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        h2 { color: #333; }
+        form { max-width: 400px; margin: auto; background: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        label, input { display: block; width: 100%; margin-bottom: 10px; text-align: left; }
+        input { padding: 8px; font-size: 1em; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 10px; font-size: 1.2em; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #218838; }
+        #result { margin-top: 20px; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+
+    <h2>Electricity Cost Calculator (VECO)</h2>
+    <form id="electricityForm">
+        <label for="device">Device Name:</label>
+        <input type="text" id="device" required>
+
+        <label for="power">Power Usage (W):</label>
+        <input type="number" id="power" required>
+
+        <label for="hours">Hours Used per Day:</label>
+        <input type="number" id="hours" required>
+
+        <button type="button" onclick="calculateCost()">Calculate</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        function calculateCost() {
+            let device = document.getElementById("device").value;
+            let powerWatts = parseFloat(document.getElementById("power").value);
+            let hoursPerDay = parseFloat(document.getElementById("hours").value);
+            let costPerKWh = 11.26; // VECO's electricity rate in PHP
+
+            if (isNaN(powerWatts) || isNaN(hoursPerDay) || powerWatts <= 0 || hoursPerDay <= 0) {
+                alert("Please enter valid values for power and hours.");
+                return;
+            }
+
+            let dailyKWh = (powerWatts / 1000) * hoursPerDay;
+            let dailyCost = dailyKWh * costPerKWh;
+            let monthlyCost = dailyCost * 30;
+            let yearlyCost = dailyCost * 365;
+
+            document.getElementById("result").innerHTML = `
+                <h3>Cost for ${device}:</h3>
+                <p>Daily Cost: <strong>₱${dailyCost.toFixed(2)}</strong></p>
+                <p>Monthly Cost: <strong>₱${monthlyCost.toFixed(2)}</strong></p>
+                <p>Yearly Cost: <strong>₱${yearlyCost.toFixed(2)}</strong></p>
+            `;
+        }
+    </script>
+
+
+</body></html>
